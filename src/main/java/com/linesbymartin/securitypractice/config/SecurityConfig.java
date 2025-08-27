@@ -1,15 +1,16 @@
 package com.linesbymartin.securitypractice.config;
 
-import com.linesbymartin.securitypractice.security.JwtAuthenticationFilter;
-import com.linesbymartin.securitypractice.security.RestAuthenticationEntryPoint;
-import com.linesbymartin.securitypractice.user.repository.UserRepository;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.linesbymartin.securitypractice.security.RestAuthenticationEntryPoint;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.linesbymartin.securitypractice.security.JwtAuthenticationFilter;
+import com.linesbymartin.securitypractice.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,11 +19,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    private static final String[] SWAGGER_PATHS = {"/swagger-ui/**", "/v3/api-docs/swagger-config", "/v3/api-docs"};
+    private static final String[] ACTUATOR_PATHS = {"/actuator/health"};
 
     private final UserRepository userRepository;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -63,7 +66,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, SWAGGER_PATHS).permitAll()
+                        .requestMatchers(HttpMethod.GET, ACTUATOR_PATHS).permitAll()
                         .anyRequest().authenticated()
                 )
 
