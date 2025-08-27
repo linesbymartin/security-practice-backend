@@ -1,12 +1,13 @@
 package com.linesbymartin.securitypractice.user.dto;
 
+import com.linesbymartin.securitypractice.common.validation.ValueOfEnum;
+import com.linesbymartin.securitypractice.user.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,4 +30,8 @@ public class UserCreateDto {
     @Size(min = 3, message = "Last name must be at least 3 characters long")
     @Size(max = 100, message = "Last name must be at most 100 characters long")
     private String lastName;
+
+    @NotBlank(message = "Role is required")
+    @ValueOfEnum(enumClass = UserRole.class, message = "Role is not correct")
+    private String role;
 }
