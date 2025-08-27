@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 public class UserController extends CrudController<UserResponseDto, UUID, UserCreateDto, UserUpdateDto> {
 
     private final UserService userService;
@@ -20,4 +20,6 @@ public class UserController extends CrudController<UserResponseDto, UUID, UserCr
         super(userService);
         this.userService = userService;
     }
+
+    //TODO: Request for /own
 }
