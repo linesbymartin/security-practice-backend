@@ -1,5 +1,6 @@
 package com.linesbymartin.securitypractice.common.web;
 
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,6 +26,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     private ResponseEntity<ApiErrorDto> handleEntityNotFoundException(EntityNotFoundException exception, HttpServletRequest req) {
         return build(HttpStatus.NOT_FOUND, exception.getMessage(), req.getRequestURI(), Map.of());
+    }
+
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    public ResponseEntity<ApiErrorDto> handleAuthentication(AuthenticationCredentialsNotFoundException exception, HttpServletRequest req) {
+        return build(HttpStatus.UNAUTHORIZED, exception.getMessage(), req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
