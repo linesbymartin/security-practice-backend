@@ -3,9 +3,9 @@ spring:
     name: task-tracker
 
   datasource:
-    url:
-    username:
-    password:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -30,3 +30,8 @@ logging:
   level:
     org.hibernate.SQL: warn
     org.springframework: info
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-seconds: 3600
