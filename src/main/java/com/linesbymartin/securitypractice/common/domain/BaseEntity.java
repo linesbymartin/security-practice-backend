@@ -28,14 +28,12 @@ public abstract class BaseEntity {
     private Instant timestampCreate;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column()
     private Instant timestampUpdate;
 
     @PrePersist
     protected void onCreate() {
-        Instant now = Instant.now();
-        setTimestampCreate(now);
-        setTimestampUpdate(now);
+        setTimestampCreate(Instant.now());
     }
 
     @PreUpdate
