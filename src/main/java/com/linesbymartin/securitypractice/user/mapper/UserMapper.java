@@ -1,9 +1,10 @@
 package com.linesbymartin.securitypractice.user.mapper;
 
+import com.linesbymartin.securitypractice.auth.dto.RegisterRequestDto;
 import com.linesbymartin.securitypractice.common.mapper.GenericMapper;
+import com.linesbymartin.securitypractice.user.dto.UserResponseDto;
 import com.linesbymartin.securitypractice.user.domain.UserEntity;
 import com.linesbymartin.securitypractice.user.dto.UserCreateDto;
-import com.linesbymartin.securitypractice.user.dto.UserResponseDto;
 import com.linesbymartin.securitypractice.user.dto.UserUpdateDto;
 import org.mapstruct.*;
 
@@ -17,6 +18,7 @@ public interface UserMapper extends GenericMapper<UserEntity, UserResponseDto, U
     @Mapping(target = "lastName", source = "lastName")
     @Mapping(target = "timestampCreate", source = "timestampCreate")
     @Mapping(target = "timestampUpdate", source = "timestampUpdate")
+    @Mapping(target = "role", source = "role")
     UserResponseDto toResponse(UserEntity entity);
 
     @Override
@@ -25,12 +27,19 @@ public interface UserMapper extends GenericMapper<UserEntity, UserResponseDto, U
     @Mapping(target = "timestampUpdate",  ignore = true)
     UserEntity fromCreate(UserCreateDto dto);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "timestampCreate",  ignore = true)
+    @Mapping(target = "timestampUpdate",  ignore = true)
+    @Mapping(target = "role", ignore = true)
+    UserEntity fromRegister(RegisterRequestDto dto);
+
     @Override
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "timestampCreate",  ignore = true)
     @Mapping(target = "timestampUpdate",  ignore = true)
+    @Mapping(target = "role", ignore = true)
     void updateEntity(@MappingTarget UserEntity entity, UserUpdateDto dto);
 
 }
