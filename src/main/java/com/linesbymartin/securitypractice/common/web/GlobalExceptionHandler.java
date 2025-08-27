@@ -1,5 +1,7 @@
 package com.linesbymartin.securitypractice.common.web;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.linesbymartin.securitypractice.common.dto.ApiErrorDto;
@@ -23,6 +25,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     private ResponseEntity<ApiErrorDto> handleEntityNotFoundException(EntityNotFoundException exception, HttpServletRequest req) {
         return build(HttpStatus.NOT_FOUND, exception.getMessage(), req.getRequestURI(), Map.of());
+    }
+
+    @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
+    public ResponseEntity<ApiErrorDto> handleAuth(RuntimeException exception, HttpServletRequest req) {
+        return build(HttpStatus.UNAUTHORIZED, "Invalid email or password", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(EntityExistsException.class)
