@@ -7,6 +7,7 @@ import com.linesbymartin.securitypractice.user.dto.UserCreateDto;
 import com.linesbymartin.securitypractice.user.dto.UserUpdateDto;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.UUID;
 
@@ -21,5 +22,8 @@ public class UserController extends CrudController<UserResponseDto, UUID, UserCr
         this.userService = userService;
     }
 
-    //TODO: Request for /own
+    @GetMapping("/own")
+    public UserResponseDto getOwnUser() {
+        return userService.getOwnUser();
+    }
 }

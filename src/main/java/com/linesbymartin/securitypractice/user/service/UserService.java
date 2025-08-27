@@ -9,5 +9,6 @@ import com.linesbymartin.securitypractice.user.dto.UserUpdateDto;
 import java.util.UUID;
 
 public interface UserService extends CrudService<UserResponseDto, UUID, UserCreateDto, UserUpdateDto> {
+    UserResponseDto getOwnUser();
 }
 

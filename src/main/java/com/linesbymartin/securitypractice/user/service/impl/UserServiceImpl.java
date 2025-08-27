@@ -10,6 +10,7 @@ import com.linesbymartin.securitypractice.user.dto.UserCreateDto;
 import com.linesbymartin.securitypractice.user.dto.UserUpdateDto;
 import com.linesbymartin.securitypractice.user.mapper.UserMapper;
 import org.springframework.transaction.annotation.Transactional;
+import com.linesbymartin.securitypractice.ultils.ClaimsUtil;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.stereotype.Service;
 
@@ -43,4 +44,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserEntity, UUID, UserRespo
         return userMapper.toResponse(saved);
     }
 
+    @Override
+    public UserResponseDto getOwnUser() {
+        return super.getById(ClaimsUtil.getCurrentUserId());
+    }
 }
